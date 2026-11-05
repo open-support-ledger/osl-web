@@ -43,8 +43,20 @@ Use **Stellar testnet** for all development. Never commit `.env` files or any se
 | `pnpm format` / `pnpm format:check` | Format with Prettier / check formatting            |
 | `pnpm typecheck`                    | Generate Next.js types, then type-check            |
 | `pnpm test`                         | Unit and component tests (Vitest, Testing Library) |
+| `pnpm test:e2e`                     | End-to-end tests (Playwright, see below)           |
 
-Run lint, format check, typecheck, test, and build before opening a PR. CI runs the same steps.
+Run lint, format check, typecheck, test, build, and `pnpm test:e2e` before opening a PR. CI runs the same steps.
+
+## End-to-end tests
+
+`e2e/` holds Playwright tests that load real pages in Chromium. They only talk to localhost.
+
+```bash
+pnpm exec playwright install chromium   # one-time browser download
+pnpm test:e2e                           # builds the app, starts it, runs the tests
+```
+
+The web server is the production build (`next build` + `next start`), the same thing we ship, which avoids dev-server compile delays. Vitest (`pnpm test`) only runs `src/**/*.test.*` and never picks up `e2e/`. After a failed run, open `playwright-report/index.html` (CI uploads it as an artifact). `playwright-report/` and `test-results/` are git-ignored.
 
 ## Project structure
 
