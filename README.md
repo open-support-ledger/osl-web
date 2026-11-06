@@ -57,19 +57,12 @@ src/
 
 Add new tests as `*.test.ts` or `*.test.tsx` files under `src/`.
 
-## App shell and state components
+## Funding progress
 
-`src/app/layout.tsx` wraps every page in a skip link, a header with the main navigation (Home, Create a project, About), the page content and a footer. The header wraps on narrow screens and works down to 320px. Navigation uses native links, so it is keyboard navigable with visible focus styles, and the current page is marked with `aria-current="page"`.
-
-Reusable state components live in `src/components` and are imported from `@/components`:
-
-```tsx
-import { EmptyState, ErrorState, LoadingState } from "@/components";
-
-<LoadingState label="Loading payments…" />          // role="status"
-<ErrorState message="Could not load." onRetry={reload} /> // role="alert", "Try again" button when onRetry is set
-<EmptyState title="No payments yet" description="Payments appear here." action={<a href="/">Home</a>} />
-```
+`FundingProgress` (`src/components/funding-progress.tsx`) shows `raised` and an optional `goal`
+for one asset. Amounts are decimal strings with up to 7 decimals and are handled with `BigInt`
+(`src/lib/decimal.ts`), never floating point. The percentage is truncated so it only reads 100%
+when the goal is really reached, and it is not capped, so 130% shows as 130% while the bar stays full.
 
 ## Notes for contributors
 
